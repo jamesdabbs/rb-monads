@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Monad::Probably do
+describe Probably do
   let(:wrapped)   { Probably(heads: 0.6, tails: 0.4) }
   let(:unwrapped) { :rain }
 
