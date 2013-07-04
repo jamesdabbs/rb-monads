@@ -46,4 +46,9 @@ describe Dev do
     a = Dev(A.new secret: 'hunter123')
     expect( a.b.b.b.b.b.secret.value ).to eq 'hunter123'
   end
+
+  it 'can also read instance variables' do
+    a = Dev(A.new foo: 4, bar: 17, baz: 86)
+    expect( a.opts[:bar].value ).to eq 17
+  end
 end

@@ -4,6 +4,12 @@ class Dev < Monad
   end
 
   def method_missing name, *args
-    pass { |v| v.send name, *args }
+    pass do |v|
+      begin
+        v.send name, *args
+      rescue NoMethodError
+        v.instance_variable_get :"@#{name}"
+      end
+    end
   end
 end
