@@ -1,10 +1,6 @@
 class Probably < Monad
   def initialize arg
-    if arg.is_a? Hash
-      @value = arg
-    else
-      @value = { arg => 1.0 }
-    end
+    @value = arg.is_a?(Hash) ? arg : { arg => 1.0 }
   end
 
   def pass &block
@@ -17,5 +13,3 @@ class Probably < Monad
     Probably.pure r_hash
   end
 end
-
-# Pending: example

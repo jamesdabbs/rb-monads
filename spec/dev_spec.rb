@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# -- Some simple classes to try wrapping -----
 class A
   def initialize opts
     @opts = opts
@@ -22,11 +23,11 @@ class B < A
 end
 
 
-describe Monad::Dev do
+describe Dev do
   let(:wrapped)   { Dev(A.new :wrapped) }
   let(:unwrapped) { A.new :unwrapped }
 
-  it_should_behave_like "a monad" do
+  it_should_behave_like 'a monad' do
     def f v
       Dev(v.class)
     end
@@ -36,13 +37,13 @@ describe Monad::Dev do
     end
   end
 
-  it "doesn't monkey-patch anything about private methods" do
-    a = A.new secret: "*****"
+  it 'does not monkey-patch anything about private methods' do
+    a = A.new secret: '*****'
     expect{ a.b }.to raise_error
   end
 
-  it "can propogate secret access" do
-    a = Dev(A.new secret: "hunter123")
-    expect( a.b.b.b.b.b.secret.value ).to eq "hunter123"
+  it 'can propogate secret access' do
+    a = Dev(A.new secret: 'hunter123')
+    expect( a.b.b.b.b.b.secret.value ).to eq 'hunter123'
   end
 end

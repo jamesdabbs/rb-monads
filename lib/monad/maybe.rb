@@ -5,15 +5,18 @@ class Maybe < Monad
   Failed = Maybe(nil)
   
   def failed?
-    value.nil?
+    value == Failed.value
   end
 
+  def to_s
+    failed? ? 'Failed' : super
+  end
+  alias_method :inspect, :to_s
+
   def pass &block
-    begin
-      Maybe(block.call value)
-    rescue
-      Maybe::Failed
-    end
+    Maybe(block.call value)
+  rescue
+    Maybe::Failed
   end
 
   # This sugars up chaining attribute access with `pass` and allowin lookups to 

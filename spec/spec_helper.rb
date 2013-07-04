@@ -2,8 +2,6 @@ require 'pry'
 
 require_relative '../lib/monad'
 
-require_relative 'shared_examples'
-
 
 RSpec.configure do |config|
   # The following settings allow you to add :focus to a spec or context

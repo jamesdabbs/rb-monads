@@ -4,6 +4,6 @@ class Array
   end
 
   def pass &block
-    map(&block).flatten
+    map(&block).flatten(1)
   end
 end

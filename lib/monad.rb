@@ -15,8 +15,7 @@ class Monad
 
   # Monad values are just value objects
   def == other
-    raise "`other` is not a #{self.class}" unless other.class == self.class
-    value == other.value
+    other.is_a?(self.class) && value == other.value
   end
 
   # Prettier console output
@@ -26,28 +25,30 @@ class Monad
   end
   alias_method :inspect, :to_s
 
-  # Define simpler constructors for Monads
+  # Define simpler constructors for Monads i.e. Maybe(value)
   def self.inherited klass
     Object.send(:define_method, klass.name) {|value| klass.pure value }
   end
 
-  # Once `pass` is defined, we can set some sensible default implementations:
+  # This is a sensible default implementation:
   def self.pure value
     value.is_a?(self) ? value : new(value)
-  end
-
-  def join
-    pass { |v| v }
-  end
-
-  def map &block
-    join pass &block
   end
 
   # This keeps users from calling #new directly. They should use #pure
   # to get a value in its minimal context.
   class << self
     protected :new
+  end
+
+  # -- Free monad methods -----
+  def join
+    pass { |v| v }
+  end
+
+  def map &block
+    lifted = ->(v) { self.class.pure block.call v }
+    pass &lifted
   end
 end
 
