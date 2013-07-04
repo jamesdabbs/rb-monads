@@ -10,4 +10,8 @@ RSpec.configure do |config|
   config.filter_run focus: true
   config.filter_run_excluding slow: true
   config.run_all_when_everything_filtered = true
+
+  # Working through the examples Moore-style will cause a lot of failing
+  # specs. Best not to get overwhelmed.
+  config.fail_fast = true
 end
