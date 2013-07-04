@@ -19,7 +19,7 @@ class Maybe < Monad
     Maybe::Failed
   end
 
-  # This sugars up chaining attribute access with `pass` and allowin lookups to 
+  # This sugars up chaining attribute access with `pass` and allowin lookups to
   # fail. If you'd like to use this in production, please see
   #   https://github.com/pzol/monadic
   # which is significantly more robust than this implementation.

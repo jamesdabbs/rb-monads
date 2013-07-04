@@ -7,7 +7,7 @@ shared_examples_for 'a monad' do
   #   f: A -> M(B)
   #   g: B -> M(C)
   # i.e., f and g both take in regular values and return values with
-  # extra monadic context. 
+  # extra monadic context.
   it 'satisfies 1) wrapping then passing' do
     expect( m.pure(unwrapped).pass { |v| f(v) } ).to eq f(unwrapped)
   end

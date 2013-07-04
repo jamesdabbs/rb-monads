@@ -13,7 +13,7 @@ def Coin &block
     results  = block.call history
     extended = results.map do |result, prob|
       [ history + [result], prob ]
-    end 
+    end
     Probably(extended)
   end
 end
@@ -36,7 +36,7 @@ def flip *seq
   start = seq.shift.call []
 
   # Then run each flip in turn, accumulating the results
-  seq.inject(start) do |result, coin| 
+  seq.inject(start) do |result, coin|
     result.pass &coin
   end
 end
