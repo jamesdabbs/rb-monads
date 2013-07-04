@@ -9,21 +9,17 @@ shared_examples_for 'a monad' do
   # i.e., f and g both take in regular values and return values with
   # extra monadic context. 
   it 'satisfies 1) wrapping then passing' do
-    left  = m.pure(unwrapped).pass { |v| f(v) }
-    right = f(unwrapped)
-    expect( left ).to eq right
+    expect( m.pure(unwrapped).pass { |v| f(v) } ).to eq f(unwrapped)
   end
 
   it 'satisfies 2) passing wrappers' do
-    left  = wrapped.pass { |a| m.pure(a) }
-    right = wrapped
-    expect( left ).to eq right
+    expect( wrapped.pass { |a| m.pure(a) } ).to eq wrapped
   end
 
   it 'satisfies 3) reassociating' do
-    left  = wrapped.pass { |v| f(v) }.pass { |v| g(v) }
-    right = wrapped.pass { |v| f(v).pass { |v| g(v)} }
-    expect( left ).to eq right
+    chained = wrapped.pass { |v| f(v) }.pass { |v| g(v) }
+    nested  = wrapped.pass { |v| f(v).pass { |v| g(v)} }
+    expect( chained ).to eq nested
   end
 
   # Note that if you define (f ** g)(x) = f(x).pass(g), these laws are basically

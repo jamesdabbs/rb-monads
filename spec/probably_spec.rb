@@ -1,20 +1,25 @@
 require 'spec_helper'
 
 describe Probably do
+  def f v
+    Probably(heads: 0.5, tails: 0.5)
+  end
+
+  def g v
+    if v == :head
+      Probably(heads: 0.4, side: 0.1, tails: 0.5)
+    else
+      Probably(heads: 0.6, tails: 0.4)
+    end
+  end
+
   let(:wrapped)   { Probably(heads: 0.6, tails: 0.4) }
-  let(:unwrapped) { :rain }
+  let(:unwrapped) { :tails }
 
-  it_should_behave_like 'a monad' do
-    def f v
-      if v == :heads
-        Probably(heads: 0.0, tails: 1.0)
-      else
-        Probably(v => 0.5, :something_else => 0.5)
-      end
-    end
+  it_should_behave_like 'a monad'
 
-    def g v
-      Probably(v => 0.1, dispair: 0.9)
-    end
+  it 'preserves unity' do
+    result = wrapped.pass { |v| f v }.pass { |v| g v }
+    expect( result.odds { 1 == 1 } ).to be_within(0.00000001).of(1.0)
   end
 end
