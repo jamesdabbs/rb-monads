@@ -1,6 +1,6 @@
 class Dev < Monad
   def pass &block
-    Dev.pure block.call value
+    # FIXME: ensure that we stay inside the Dev monad
   end
 
   def method_missing name, *args

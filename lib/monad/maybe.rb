@@ -14,9 +14,7 @@ class Maybe < Monad
   alias_method :inspect, :to_s
 
   def pass &block
-    Maybe(block.call value)
-  rescue
-    Maybe::Failed
+    # FIXME: try to apply the block, return Failed if it fails
   end
 
   # This sugars up chaining attribute access with `pass` and allowin lookups to

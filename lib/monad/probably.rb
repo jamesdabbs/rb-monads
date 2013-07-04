@@ -11,13 +11,7 @@ class Probably < Monad
   end
 
   def pass &block
-    results = []
-    value.each do |o1, p1|
-      block.call(o1).value.each do |o2, p2|
-        results << [o2, p1 * p2]
-      end
-    end
-    Probably.pure results
+    # FIXME: how do you flatten a list of probabilities? Think co-occurence ...
   end
 
   # This little helper function sums of the probabilities of events matching
