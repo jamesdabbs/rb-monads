@@ -44,9 +44,9 @@ end
 require 'pry'
 binding.pry
 # Try it out:
-# - What do you get flipping three :fair coins? Three :never_fails?
+# - What do you get flipping three fair coins? Three never_fails?
 # - Compare the chances of getting at least two tails in each of the following:
-#   - :fair, :fair, :fair
-#   - :loaded, :balancing, :balancing
-#   - :loaded, :fair, :fair
-#   - :loaded, :balancing, :fair
+#   - fair, fair, fair
+#   - loaded, balancing, balancing
+#   - loaded, fair, fair
+#   - loaded, balancing, fair
