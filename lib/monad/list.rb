@@ -1,6 +1,6 @@
 class List < Monad
   def initialize arg
-    @value = arg.is_a?(Array) ? arg : [arg]
+    @value = [*arg]
   end
 
   def pass &block
