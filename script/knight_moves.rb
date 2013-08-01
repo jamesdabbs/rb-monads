@@ -3,7 +3,7 @@
 
 require 'colorize'
 
-require_relative '../lib/monad/array'
+require_relative '../lib/monad'
 
 sx, sy, n = ARGV.map &:to_i
 if n.nil?
@@ -35,8 +35,10 @@ def draw marked
 end
 
 # Lists the squares reachable from the square (x,y)
-def moves x,y
-  [
+# moves :: Position -> List(Position)
+moves = ->(position) do
+  x,y     = position
+  allowed = [
     [x + 1, y + 2],
     [x + 1, y - 2],
     [x - 1, y + 2],
@@ -46,29 +48,32 @@ def moves x,y
     [x - 2, y + 1],
     [x - 2, y - 1]
   ].select { |a,b| Dim.include?(a) && Dim.include?(b) }
+  List.new allowed
 end
 
 # Note that moves takes in a single position and returns all the possibilities
 # for moves from there. That works fine from the single starting position, but
-# to "compose" moves once our position is fuzzy, we use the fact that Array is
+# to "compose" moves once our position is fuzzy, we use the fact that List is
 # a monad:
-reached = [[sx, sy]]
+reached = List.pure [sx, sy]
 n.times do
-  reached = reached.pass { |x,y| moves x,y }
+  reached = reached.bind &moves
 end
 
 draw reached
 
 
-# The monad structure allows us to lift functions mapping values to arrays, but
+# The monad structure allows us to lift functions mapping values to Lists, but
 # what about a simple function like:
-def mirror x,y
+mirror = ->(position) do
+  x,y = position
   max = Dim.last
   [max - x + 1, max - y + 1]
 end
 
 # We can recover `map` just using the monad structure. Examine:
-# > reached.map  { |x,y| mirror(x,y) }
-# > reached.pass { |x,y| Array.pure mirror(x,y) }
-require 'pry'
+# > reached.map &mirror
+# > _.map { |sq| List.pure sq }
+# > _.flatten
+# require 'pry'
 # binding.pry
