@@ -26,9 +26,16 @@ balancing   = Coin { |history|
   last = history.last || raise("Can't flip a balancing coin first")
   { last => 0.25, opposite(last) => 0.75 }
 }
-contrary    = Coin { |history|
+contrary = Coin { |history|
   last = history.last || raise("Can't flip a contrary coin first")
   { opposite(last) => 1.0 }
+}
+matthew = Coin { |history|
+  if history.count(:heads) > history.count(:tails)
+    {heads: 1.0}
+  else
+    {tails: 1.0}
+  end
 }
 
 def flip *seq
