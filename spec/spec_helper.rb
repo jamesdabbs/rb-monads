@@ -2,6 +2,9 @@ require 'pry'
 
 require_relative '../lib/monad'
 
+def show str
+  puts str if ENV['SHOW']
+end
 
 shared_examples_for 'a monad' do
   let(:m) { described_class }
@@ -15,14 +18,14 @@ shared_examples_for 'a monad' do
     left  = m.pure(unwrapped).bind(&f)
     right = f.call(unwrapped)
 
-    puts "#{left} == #{right}"
+    show "#{left} == #{right}"
     expect( left ).to eq right
   end
 
   it 'satisfies 2) binding wrappers' do
     bound = wrapped.bind { |a| m.pure(a) }
     
-    puts "#{bound} == #{wrapped}"
+    show "#{bound} == #{wrapped}"
     expect( bound ).to eq wrapped
   end
 
@@ -32,7 +35,7 @@ shared_examples_for 'a monad' do
     partial = ->(v) { f.call(v).bind(&g) }
     nested  = wrapped.bind(&partial)
 
-    puts "#{nested} == #{chained}"
+    show "#{nested} == #{chained}"
     expect( nested ).to eq chained
   end
 
