@@ -3,7 +3,7 @@ require 'pry'
 require_relative '../lib/monad'
 
 def show str
-  puts str if ENV['SHOW']
+  puts "\n#{str}" if ENV['SHOW']
 end
 
 shared_examples_for 'a monad' do
@@ -18,14 +18,14 @@ shared_examples_for 'a monad' do
     left  = m.pure(unwrapped).bind(&f)
     right = f.call(unwrapped)
 
-    show "#{left} == #{right}"
+    show "1) #{left} == #{right}"
     expect( left ).to eq right
   end
 
   it 'satisfies 2) binding wrappers' do
     bound = wrapped.bind { |a| m.pure(a) }
     
-    show "#{bound} == #{wrapped}"
+    show "2) #{bound} == #{wrapped}"
     expect( bound ).to eq wrapped
   end
 
@@ -35,7 +35,7 @@ shared_examples_for 'a monad' do
     partial = ->(v) { f.call(v).bind(&g) }
     nested  = wrapped.bind(&partial)
 
-    show "#{nested} == #{chained}"
+    show "3) #{nested} == #{chained}"
     expect( nested ).to eq chained
   end
 
@@ -52,7 +52,6 @@ RSpec.configure do |config|
   # and run only those specs
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.filter_run focus: true
-  config.filter_run_excluding slow: true
   config.run_all_when_everything_filtered = true
 
   # Working through the examples Moore-style will cause a lot of failing
