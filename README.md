@@ -1,3 +1,5 @@
+Video for this talk is now available [on Vimeo](vimeo.com/73430055).
+
 # Monads in Ruby
 
 Monads are typically encountered when working in a functional language like
